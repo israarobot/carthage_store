@@ -1,5 +1,7 @@
+import 'package:carthage_store/admin/admin-settings.dart';
+import 'package:carthage_store/admin/bayers.dart';
+import 'package:carthage_store/admin/sellers.dart';
 import 'package:flutter/material.dart';
-
 
 class AdminDashboardScreen extends StatefulWidget {
   @override
@@ -16,10 +18,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      
-        resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text(
@@ -82,57 +82,96 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       mainAxisSpacing: 20,
       childAspectRatio: 1.3,
       children: [
-        _buildStatCard("Total Users", "${userStats['totalUsers']}", Icons.group, Colors.blue),
-        _buildStatCard("Buyers", "${userStats['buyers']}", Icons.people, Colors.green),
-        _buildStatCard("Sellers", "${userStats['sellers']}", Icons.store, Colors.purple),
-        _buildStatCard("Active", "${userStats['activeUsers']}", Icons.trending_up, Colors.orange),
+        _buildStatCard(
+          "Total Users",
+          "${userStats['totalUsers']}",
+          Icons.group,
+          Colors.blue,
+        ),
+        _buildStatCard(
+          "Buyers",
+          "${userStats['buyers']}",
+          Icons.people,
+          Colors.green,
+          onTap:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BuyersScreen()),
+              ),
+        ),
+        _buildStatCard(
+          "Sellers",
+          "${userStats['sellers']}",
+          Icons.store,
+          Colors.purple,
+          onTap:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SellersScreen()),
+              ),
+        ),
+        _buildStatCard(
+          "Active",
+          "${userStats['activeUsers']}",
+          Icons.trending_up,
+          Colors.orange,
+        ),
       ],
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color, {
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: .1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: color, size: 36),
               ),
-              child: Icon(icon, color: color, size: 36),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    value,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                    const SizedBox(height: 8),
+                    Text(
+                      value,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -143,10 +182,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       children: [
         _buildActionButton(
           context,
-          "Manage Users",
+          "My Profile",
           Icons.person_search,
           Colors.blue,
-          () => Navigator.pushNamed(context, '/manage-users'),
+          () => Navigator.push(
+            context,
+             MaterialPageRoute(builder: (context) => AdminAccountSettingsScreen()),
+        ),
         ),
         _buildActionButton(
           context,
@@ -166,7 +208,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildActionButton(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActionButton(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
@@ -206,56 +254,74 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void _showAddUserDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Add New User', style: TextStyle(color: Colors.deepOrange)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              ),
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            const SizedBox(height: 12),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              ),
+            title: const Text(
+              'Add New User',
+              style: TextStyle(color: Colors.deepOrange),
             ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Role',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              items: ['Buyer', 'Seller'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (_) {},
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: 'Role',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  items:
+                      ['Buyer', 'Seller'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                  onChanged: (_) {},
+                ),
+              ],
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Add User'),
+              ),
+            ],
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Add User'),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -268,15 +334,30 @@ class UserManagementScreen extends StatefulWidget {
 
 class _UserManagementScreenState extends State<UserManagementScreen> {
   final List<Map<String, dynamic>> users = [
-    {"id": "USR001", "name": "John Doe", "email": "john@example.com", "role": "Buyer", "status": "Active"},
-    {"id": "USR002", "name": "Jane Smith", "email": "jane@example.com", "role": "Seller", "status": "Inactive"},
+    {
+      "id": "USR001",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Buyer",
+      "status": "Active",
+    },
+    {
+      "id": "USR002",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "role": "Seller",
+      "status": "Inactive",
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Users", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Manage Users",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         elevation: 0,
         flexibleSpace: Container(
@@ -319,19 +400,31 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                 children: [
                   Text(
                     user["name"]!,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
-                  Text(user["email"]!, style: TextStyle(color: Colors.grey[600])),
+                  Text(
+                    user["email"]!,
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text("Role: ${user["role"]}", style: const TextStyle(color: Colors.blue)),
+                      Text(
+                        "Role: ${user["role"]}",
+                        style: const TextStyle(color: Colors.blue),
+                      ),
                       const SizedBox(width: 12),
                       Text(
                         user["status"]!,
                         style: TextStyle(
-                          color: user["status"] == "Active" ? Colors.green : Colors.red,
+                          color:
+                              user["status"] == "Active"
+                                  ? Colors.green
+                                  : Colors.red,
                         ),
                       ),
                     ],
@@ -363,7 +456,10 @@ class UserReportsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Reports", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "User Reports",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         elevation: 0,
         flexibleSpace: Container(

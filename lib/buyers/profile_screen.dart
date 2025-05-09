@@ -33,7 +33,9 @@ class ProfileScreen extends StatelessWidget {
               _buildProfileOption(Icons.edit, "Edit Profile", () {}),
               _buildProfileOption(Icons.shopping_bag, "My Orders", () {}),
               _buildProfileOption(Icons.settings, "Settings", () {}),
-              _buildProfileOption(Icons.logout, "Logout", () {}),
+              _buildProfileOption(Icons.logout, "Logout", () {
+                 Navigator.pushNamed(context, '/login');
+              }),
             ],
           ),
         ),

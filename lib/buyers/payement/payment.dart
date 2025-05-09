@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
   @override
@@ -24,7 +24,7 @@ class PaymentSuccessScreen extends StatelessWidget {
             height: 80,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.orange, // Simplified to a solid color
+              color: Colors.orange,
             ),
             child: Icon(
               Icons.check,
@@ -51,7 +51,7 @@ class PaymentSuccessScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 30),
-          // Payment Details Card (Simplified)
+          // Payment Details Card
           Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             padding: EdgeInsets.all(15),
@@ -81,7 +81,6 @@ class PaymentSuccessScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 30),
-          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: SizedBox(
@@ -101,7 +100,7 @@ class PaymentSuccessScreen extends StatelessWidget {
                   elevation: WidgetStateProperty.all<double>(4),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
                 },
                 child: Text(
                   'Back Home',

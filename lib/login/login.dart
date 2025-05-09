@@ -8,10 +8,8 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderStateMixin {
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   bool _agreeToTerms = false;
@@ -32,11 +30,25 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
   @override
   void dispose() {
     _animationController.dispose();
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void _handleSignIn() {
+    // Basic validation
+    if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+      // Navigate to home screen
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      // Show error message if fields are empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill in both email and password'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -60,7 +72,7 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
-                      Icons.storefront, // Store-related icon from Flutter
+                      Icons.storefront,
                       size: 50,
                       color: Colors.orange,
                     ),
@@ -105,7 +117,6 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 15),
-
                   // Password Field
                   TextField(
                     controller: _passwordController,
@@ -128,7 +139,6 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                     obscureText: true,
                   ),
                   const SizedBox(height: 15),
-
                   // Terms and Conditions Checkbox
                   Row(
                     children: [
@@ -150,8 +160,7 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                     ],
                   ),
                   const SizedBox(height: 15),
-
-                  // Signup Button
+                  // Sign In Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
@@ -159,15 +168,7 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       elevation: 5,
                     ),
-                    onPressed: _agreeToTerms
-                        ? () {
-                            // Navigate to HomeScreen on successful signup
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => const HomeScreen()),
-                            // );
-                          }
-                        : null, // Disabled if terms not agreed
+                    onPressed: _agreeToTerms ? _handleSignIn : null,
                     child: const Text(
                       "Sign In",
                       style: TextStyle(
@@ -178,7 +179,6 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                     ),
                   ),
                   const SizedBox(height: 20),
-
                   // Divider with "OR"
                   Row(
                     children: [
@@ -194,10 +194,9 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                     ],
                   ),
                   const SizedBox(height: 20),
-
-                  // Social Signup Buttons with Flutter Icons
+                  // Social Signin Buttons
                   SocialSigninButton(
-                    icon: Icons.g_mobiledata, // Google icon approximation
+                    icon: Icons.g_mobiledata,
                     text: "Sign in with Google",
                     color: Colors.white,
                     textColor: Colors.black87,
@@ -206,7 +205,7 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                   ),
                   const SizedBox(height: 15),
                   SocialSigninButton(
-                    icon: Icons.facebook, // Facebook icon
+                    icon: Icons.facebook,
                     text: "Sign in with Facebook",
                     color: const Color(0xFF1877F2),
                     textColor: Colors.white,
@@ -214,28 +213,24 @@ class _SigninScreenState extends State<SigninScreen> with SingleTickerProviderSt
                   ),
                   const SizedBox(height: 15),
                   SocialSigninButton(
-                    icon: Icons.apple, // Apple icon
+                    icon: Icons.apple,
                     text: "Sign in with Apple",
                     color: Colors.black,
                     textColor: Colors.white,
                     onPressed: () {},
                   ),
                   const SizedBox(height: 20),
-
                   // Login Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Already have an account? ",
+                        "You don't have an account? ",
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-                          // );
+                          Navigator.pushNamed(context, '/signup');
                         },
                         child: const Text(
                           "Login",
@@ -300,4 +295,3 @@ class SocialSigninButton extends StatelessWidget {
     );
   }
 }
-

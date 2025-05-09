@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OnboardScreen extends StatelessWidget {
+  const OnboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,19 +20,19 @@ class OnboardScreen extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.orange.withValues(alpha: 0.2), // Fixed opacity
+                  Colors.orange.withValues(alpha: 0.2),
                 ],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20 , vertical: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // Centered horizontally
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "F",
@@ -60,8 +62,8 @@ class OnboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // Centered horizontally
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "H",
@@ -101,34 +103,36 @@ class OnboardScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 150),
-                GestureDetector(
-                  onTap: () {
-                    // Handle navigation
+                ElevatedButton(
+                  onPressed: () {
+                    print('Button tapped! Navigating to /login'); 
+                    Navigator.pushNamed(context, '/login');
                   },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Let's Get Started",
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.arrow_outward,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 30),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Let's Get Started",
+                        style: TextStyle(
                           color: Colors.orange,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.arrow_outward,
+                        color: Colors.orange,
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 50),

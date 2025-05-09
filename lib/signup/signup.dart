@@ -206,11 +206,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                     ),
                     onPressed: _agreeToTerms
                         ? () {
-                            // Navigate to HomeScreen on successful signup
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => const HomeScreen()),
-                            // );
+                          Navigator.pushNamed(context, '/login');
                           }
                         : null, // Disabled if terms not agreed
                     child: const Text(
@@ -277,10 +273,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-                          // );
+                        Navigator.pushNamed(context, '/login');
                         },
                         child: const Text(
                           "Login",

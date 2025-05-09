@@ -494,7 +494,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
+          onTap: (index) {
+          setState(() => _selectedIndex = index);
+          if (index == 1) {
+            Navigator.pushNamed(context, '/search');
+          }
+          if (index == 2) {
+            Navigator.pushNamed(context, '/favorites');
+          }
+          if (index == 3) {
+            Navigator.pushNamed(context, '/profile');
+          }
+          },
           backgroundColor: Colors.white,
           selectedItemColor: Colors.orange,
           unselectedItemColor: Colors.grey,
@@ -508,7 +519,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
     );
   }
-
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {},
